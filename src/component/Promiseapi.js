@@ -5,16 +5,16 @@ const Promiseapi = () => {
 	console.log(user);
 
 	const promiseHandler = (e) => {
-		e.preventDefault();
 		const fetchApiOne = fetch(`https://jsonplaceholder.typicode.com/users`);
 		fetchApiOne
 			.then((value) => value.json())
 			.then(data =>
 				data.map((value) =>
+				value.id<5?
 					fetch(`https://jsonplaceholder.typicode.com/users/${value.id}`)
 						.then(response => response.json())
-						.then(ele => setUser({ele}))
-						.catch(err => console.log(err))
+						.then(ele => setUser(...user,ele))
+						.catch(err => console.log(err)):null
 				)
 			).catch(err => console.log(err));
 	}
@@ -25,7 +25,7 @@ const Promiseapi = () => {
 		response.map(async (user) => {
 			const getUser = await fetch(`https://jsonplaceholder.typicode.com/users/${user.id}`)
 			const getUserResponse = await getUser.json();
-			setUser(getUserResponse);
+			getUserResponse.id<5 && setUser(getUserResponse);
 		})
 	}
 
